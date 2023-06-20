@@ -348,7 +348,7 @@ jobs:
 
   pagerduty-notification:
     if: github.event.inputs.triggerPagerDutyTest=='true' || failure()
-    needs: [sigstore-probe, root-probe, rekor-fulcio-e2e, compute-summary-msg]
+    needs: [rekor-fulcio-e2e]
     uses: ./.github/workflows/reusable-pager.yml
     secrets:
       PAGERDUTY_INTEGRATION_KEY: ${{ secrets.PAGERDUTY_INTEGRATION_KEY }}
