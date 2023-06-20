@@ -89,6 +89,7 @@ jobs:
           PAGERDUTY_INTEGRATION_KEY: ${{ secrets.PAGERDUTY_INTEGRATION_KEY }}
         run: |
           cd pager-duty
+          echo ${{ inputs.skip-pagerduty }}
           go run main.go --retry-count ${{ inputs.retries }} <<EOF
           {
             "summary": "${{ inputs.summary }}",
