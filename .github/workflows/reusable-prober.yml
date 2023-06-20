@@ -358,7 +358,6 @@ jobs:
       summary: ${{ needs.compute-summary-msg.outputs.summary }}
       component: "health prober"
       group: ${{ needs.compute-summary-msg.outputs.group }}
-      skip-pagerduty: ${{ needs.rekor-fulcio-e2e.outputs.skip_pagerduty }}
       details: >
         {
           "Environment": "${{ needs.compute-summary-msg.outputs.group }}",
