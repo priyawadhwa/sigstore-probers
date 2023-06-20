@@ -184,7 +184,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       rekor_fulcio_e2e: ${{ steps.msg.outputs.rekor_fulcio_e2e }}
-      ignore_failure: ${{ steps.github-oidc-server.outputs.ignore_failure }}
+      skip_pagerduty: ${{ steps.github-oidc-server.outputs.skip_pagerduty }}
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
   
@@ -198,10 +198,10 @@ jobs:
 
       # Since the server is down, we want to ignore the failure in this workflow
       # and skip paging PagerDuty
-      - name: Set ignore_failure outputs
+      - name: Set skip_pagerduty outputs
         if: failure()
         run: |
-          echo "ignore_failure=true" >> $GITHUB_OUTPUT
+          echo "skip_pagerduty=true" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v3.3.0
         id: setup-go
@@ -343,7 +343,7 @@ jobs:
           fi
 
   pagerduty-notification:
-    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && ${{ needs.rekor-fulcio-e2e.outputs.ignore_failure }} != 'true')
+    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && ${{ needs.rekor-fulcio-e2e.outputs.skip_pagerduty }} != 'true')
     needs: [sigstore-probe, root-probe, rekor-fulcio-e2e, compute-summary-msg]
     uses: ./.github/workflows/reusable-pager.yml
     secrets:
