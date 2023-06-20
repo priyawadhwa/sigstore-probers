@@ -58,7 +58,7 @@ jobs:
 
       - uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6.4.1
         id: detailsAndLinks
-        if: ${{ inputs.skip-pagerduty != 'true'}}
+        if: inputs.skip-pagerduty != 'true'
         env:
           DETAILS: ${{ inputs.details }}
           LINKS: ${{ inputs.links }}
@@ -84,7 +84,7 @@ jobs:
 
       - name: Pagerduty Notification
         shell: bash
-        if: ${{ inputs.skip-pagerduty != 'true'}}
+        if: inputs.skip-pagerduty != 'true'
         env:
           PAGERDUTY_INTEGRATION_KEY: ${{ secrets.PAGERDUTY_INTEGRATION_KEY }}
         run: |
