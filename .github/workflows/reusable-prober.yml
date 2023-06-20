@@ -203,6 +203,10 @@ jobs:
         run: |
           echo "skip_pagerduty=true" >> $GITHUB_OUTPUT
 
+      - name: fail
+        run: |
+          exit 1
+
       - uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v3.3.0
         id: setup-go
         with:
@@ -343,7 +347,7 @@ jobs:
           fi
 
   pagerduty-notification:
-    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && ${{ needs.rekor-fulcio-e2e.outputs.skip_pagerduty }} != 'true')
+    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && ${{ needs.rekor-fulcio-e2e.outputs.skip_pagerduty }}!='true')
     needs: [sigstore-probe, root-probe, rekor-fulcio-e2e, compute-summary-msg]
     uses: ./.github/workflows/reusable-pager.yml
     secrets:
