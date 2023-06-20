@@ -347,7 +347,7 @@ jobs:
           fi
 
   pagerduty-notification:
-    if: failure() && ${{ (needs.rekor-fulcio-e2e.outputs.skip_pagerduty != 'true') }}
+    if: failure() && !${{needs.rekor-fulcio-e2e.outputs.skip_pagerduty}}
     needs: [rekor-fulcio-e2e]
     uses: ./.github/workflows/reusable-pager.yml
     secrets:
