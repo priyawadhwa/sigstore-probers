@@ -203,8 +203,9 @@ jobs:
         run: |
           echo "skip_pagerduty=true" >> $GITHUB_OUTPUT
 
-      - name: fail
+      - name: fail but skip pd
         run: |
+          echo "skip_pagerduty=true" >> $GITHUB_OUTPUT
           exit 1
 
       - uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v3.3.0
