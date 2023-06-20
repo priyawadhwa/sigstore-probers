@@ -347,7 +347,7 @@ jobs:
           fi
 
   pagerduty-notification:
-    if: github.event.inputs.triggerPagerDutyTest=='true' || failure()
+    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && ${{ needs.rekor-fulcio-e2e.outputs.skip_pagerduty != 'true' }})
     needs: [rekor-fulcio-e2e]
     uses: ./.github/workflows/reusable-pager.yml
     secrets:
