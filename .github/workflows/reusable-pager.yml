@@ -39,8 +39,7 @@ on:
         type: string
       skip-pagerduty:
         description: 'Skip the pagerduty step'
-        type: boolean
-        default: false
+        type: string
 
 permissions:
   contents: read
