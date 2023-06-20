@@ -334,7 +334,7 @@ jobs:
           fi
 
   pagerduty-notification:
-    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && steps.github-oidc-server.outcome == 'success')
+    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && jobs.rekor-fulcio-e2e.steps.github-oidc-server.outcome == 'success')
     needs: [sigstore-probe, root-probe, rekor-fulcio-e2e, compute-summary-msg]
     uses: ./.github/workflows/reusable-pager.yml
     secrets:
