@@ -191,7 +191,7 @@ jobs:
       # Instead, check it and exit if it's unavailable
       - name: Confirm Github OIDC Server is Available
         run: |
-          curl $ACTIONS_ID_TOKEN_REQUEST_URL&audience=sigstore -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN"
+          curl -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" $ACTIONS_ID_TOKEN_REQUEST_URL&audience=sigstore
 
       - uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v3.3.0
         id: setup-go
