@@ -184,6 +184,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       rekor_fulcio_e2e: ${{ steps.msg.outputs.rekor_fulcio_e2e }}
+      oidc_server_availabe: ${{ steps.github-oidc-server.outputs.oidc_server_availabe }}
     steps:
       - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
   
@@ -191,8 +192,14 @@ jobs:
       # If the server is down, and this step fails, we don't alert PagerDuty
       - name: Confirm Github OIDC Server is Available
         id: github-oidc-server
+        continue-on-error: true
         run: |
           curl -H "Authorization: Bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" $ACTIONS_ID_TOKEN_REQUEST_URL&audience=sigstore
+
+      - name: Set oidc_server_availabe outputs
+        if: failure()
+        run: |
+          echo "oidc_server_availabe=failure" >> $GITHUB_OUTPUT
 
       - uses: actions/setup-go@fac708d6674e30b6ba41289acaab6d4b75aa0753 # v3.3.0
         id: setup-go
@@ -334,7 +341,7 @@ jobs:
           fi
 
   pagerduty-notification:
-    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && jobs.rekor-fulcio-e2e.steps.github-oidc-server.outcome == 'success')
+    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && ${{ needs.rekor-fulcio-e2e.outputs.oidc_server_availabe }} != 'failure')
     needs: [sigstore-probe, root-probe, rekor-fulcio-e2e, compute-summary-msg]
     uses: ./.github/workflows/reusable-pager.yml
     secrets:
