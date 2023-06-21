@@ -55,7 +55,6 @@ jobs:
           if [ "${{ matrix.env }}" == "production" ]; then
             echo "probe_status=failed" >> $GITHUB_OUTPUT && exit 1;
           fi
-          echo "probe_status=success" >> $GITHUB_OUTPUT
           if ! go run ./prober/ctlog/ctlog-sth.go --env ${{ matrix.env }} --shard ${{ matrix.shard }} ; then
             echo "probe_status=failed" >> $GITHUB_OUTPUT
             exit 1
