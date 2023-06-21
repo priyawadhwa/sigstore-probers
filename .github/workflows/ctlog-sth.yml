@@ -59,7 +59,7 @@ jobs:
           fi
           echo "probe_status=failed" >> $GITHUB_OUTPUT
   pager:
-    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && needs.ctlog-sth.outputs.probe_status == "failed")
+    if: github.event.inputs.triggerPagerDutyTest=='true' || (failure() && needs.ctlog-sth.outputs.probe_status == 'failed')
     needs: [ctlog-sth]
     uses: ./.github/workflows/reusable-pager.yml
     secrets:
